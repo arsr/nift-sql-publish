@@ -1,0 +1,28 @@
+FUSION TRAINING DATA | seed 1 | cross-encoder run nift_ce | validation questions only
+
+customer beaver (beaver): 63 validation questions, 5092 candidate rows (80.8 per question), 317 positive (6.2%), 8 feature columns, 10 with the reranker features
+customer livesqlbench (livesqlbench + livesqlbench_large): 226 validation questions, 19926 candidate rows (88.2 per question), 578 positive (2.9%), 8 feature columns, 10 with the reranker features
+
+Example: beaver validation question 9: "What is the name of the building that accomodates the most students, and how many students does it accomodate?"
+gold tables: fclt_rooms, fclt_building, mit_student_directory | 77 candidate rows, 3 positive; shown: every gold row, the 6 highest- and 3 lowest-scored non-gold rows
+
+| table | label | scorer logit | scorer rank | search rank | dense cosine | BM25 | rank gap | DB best search rank | DB best scorer rank | reranker logit | reranker rank | fused P |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| fclt_building | 1 | -2.20 | 15 | 2 | 0.524 | 0.96 | 1.67 | 0 | 0 | -1.50 | 2 | 0.124 |
+| mit_student_directory | 1 | 1.80 | 1 | 24 | 0.468 | 0.00 | 2.53 | 0 | 0 | -3.88 | 13 | 0.053 |
+| fclt_rooms | 1 | -2.52 | 19 | 17 | 0.464 | 0.43 | 0.11 | 0 | 0 | -3.06 | 7 | 0.019 |
+| fac_building | 0 | -1.38 | 8 | 0 | 0.536 | 0.96 | 2.20 | 0 | 0 | -1.25 | 1 | 0.218 |
+| fclt_building_hist | 0 | -5.66 | 65 | 1 | 0.527 | 0.96 | 3.50 | 0 | 0 | -2.94 | 6 | 0.110 |
+| buildings | 0 | -2.25 | 16 | 4 | 0.500 | 1.00 | 1.22 | 0 | 0 | -0.63 | 0 | 0.085 |
+| fclt_building_hist_1 | 0 | -5.72 | 67 | 3 | 0.523 | 0.96 | 2.83 | 0 | 0 | -2.37 | 4 | 0.078 |
+| iap_subject_detail | 0 | 2.20 | 0 | 42 | 0.432 | 0.00 | 3.76 | 0 | 0 | -7.06 | 56 | 0.052 |
+| fac_rooms | 0 | 0.88 | 2 | 20 | 0.441 | 0.29 | 1.95 | 0 | 0 | -3.37 | 8 | 0.042 |
+| ... | | | | | | | | | | | | |
+| reservations | 0 | -9.44 | 399 | 46 | 0.427 | 0.00 | 2.14 | 23 | 57 | -8.22 | 65 | 0.000 |
+| lbaas_l7policies | 0 | -9.06 | 144 | 43 | 0.431 | 0.00 | 1.19 | 23 | 57 | -10.70 | 76 | 0.000 |
+| backups | 0 | -4.31 | 38 | 224 | 0.340 | 0.00 | 1.75 | 38 | 38 | -8.37 | 69 | 0.000 |
+
+Fused P: the 8-feature fusion fitted on this customer's validation questions (this question included, as a training row).
+
+Standardized fusion weights, customer beaver, 8 features: {'logit_p': 1.084, 'log_rank_cls': -0.002, 'log_rank_hyb': -0.301, 'dense': 0.576, 'bm25': 0.264, 'disagree': 0.286, 'db_best_rank_hyb': -1.068, 'db_best_rank_cls': -0.803}
+with the two reranker features: {'logit_p': 0.867, 'log_rank_cls': -0.036, 'log_rank_hyb': 0.125, 'dense': 0.391, 'bm25': 0.087, 'disagree': 0.254, 'db_best_rank_hyb': -1.203, 'db_best_rank_cls': -0.942, 'reranker_logit': 0.954, 'reranker_log_rank': -0.134}

@@ -1,0 +1,52 @@
+# Confirmation run (experiments/confirm_beaver_v3.py): NIFT-SQL exactly as frozen in configs/ftsearch.yaml,
+# applied once to the current public BEAVER release (dw, nova, neutron pooled, 381 tables). Only the data changes.
+datasets:
+  beaver_v3: beaver_v3   # synthetic questions; the 121 real questions are a separate, test-only set
+
+customers:
+  beaver_v3: [beaver_v3]
+
+split:
+  train: 0.5         # by question count, grouped by gold-table set
+  val: 0.3
+  test: 0.2
+
+card:
+  mode: names_only   # "TABLE: col, col, ..." from CREATE TABLE. Types, comments and sample rows are ignored.
+  joins_max: 6
+  card_max: 700
+
+search:
+  model: BAAI/bge-large-en-v1.5
+  w_dense: 0.6
+  w_bm25: 0.4
+  finetune:          # contrastive fine-tuning on the scorer's training rows (question, gold table, hard negative), as in Appendix A
+    epochs: 2
+    lr: 2.0e-5
+    batch: 32
+
+scorer:
+  base: convaiinnovations/laya
+  laya_version: 0.4.8
+  hard_neg: 4
+  rand_neg: 1
+  epochs: 4
+  loss: soft-ce
+  micro_batch: 16
+  grad_accum: 4
+  calib_max: 2000
+  batch_size: 128    # scoring batch size
+
+fusion:
+  candidates_top: 50 # Laya top 50 union search top 50
+  C: 1.0
+  features: [logit_p, log_rank_cls, log_rank_hyb, dense, bm25, disagree, db_best_rank_hyb, db_best_rank_cls]
+
+evaluate:
+  K: [5, 8, 15, 25]
+  N: [5, 10, 15]
+  headline: [c@8, c@15]
+  bootstrap_reps: 3000
+
+costs:
+  gpu_price_per_hour: 1.50

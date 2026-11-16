@@ -1,0 +1,16 @@
+# timing.json of experiments/supervised_crossencoder.py runs (results/nift_ce_seed<N>/timing.json), bge-reranker-large,
+# fine-tuned on Laya's training rows. Training in minutes per customer; scoring in ms per table (validation + test, all tables).
+seed 1 {'train beaver (min)': 0.8, 'score beaver (ms per table)': 1.18, 'train livesqlbench (min)': 1.91, 'score livesqlbench (ms per table)': 1.62, 'score livesqlbench_large (ms per table)': 2.09}
+seed 2 {'train beaver (min)': 0.76, 'score beaver (ms per table)': 1.16, 'train livesqlbench (min)': 1.96, 'score livesqlbench (ms per table)': 1.64, 'score livesqlbench_large (ms per table)': 2.11}
+seed 3 {'train beaver (min)': 0.7, 'score beaver (ms per table)': 2.56, 'train livesqlbench (min)': 1.95, 'score livesqlbench (ms per table)': 1.38, 'score livesqlbench_large (ms per table)': 1.88}
+seed 4 {'train beaver (min)': 0.68, 'score beaver (ms per table)': 2.48, 'train livesqlbench (min)': 1.91, 'score livesqlbench (ms per table)': 1.43, 'score livesqlbench_large (ms per table)': 1.93}
+
+Mean over seeds, compared with Laya (main runs, PAPER_TABLES.txt T6). Different code paths and possibly different GPU sessions: read as about 2x, not an exact ratio.
+
+| | Laya | fine-tuned bge-reranker-large |
+|---|---|---|
+| Training, BEAVER | 1.7 min | 0.7 min |
+| Training, LiveSQLBench customer | 3.5 min | 1.9 min |
+| Scoring per table, BEAVER / LiveSQLBench / LiveSQLBench-Large | 2.8 / 2.9 / 3.8 ms | 1.8 / 1.5 / 2.0 ms |
+| All tables, per question, BEAVER / LiveSQLBench / LiveSQLBench-Large | 1.29 / 0.71 / 3.74 s | 0.86 / 0.37 / 1.94 s |
+| GPU cost per 1,000 questions, LiveSQLBench-Large, $1.50 per hour | $1.56 | $0.81 |

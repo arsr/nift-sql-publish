@@ -1,0 +1,52 @@
+NIFT-SQL confirmation on the current BEAVER release | seeds 1 | commit d3f42f7 | config 0ad7dd0c1e7b
+Pre-registered: H1 NIFT-SQL > search, H2 NIFT-SQL > matched retriever, complete@15, synthetic test.
+
+== test: 1629 questions per seed, mean over seeds, %
+                                                               c@5   c@8  c@15  c@25   R@5  R@10  R@15
+method                                                                                                
+search (off-the-shelf BGE)                                    13.4  25.1  55.4  84.1  53.2  73.4  85.3
+fine-tuned retriever, training questions                      41.7  68.3  94.3  98.8  78.1  94.4  98.5
+fine-tuned retriever, training + validation (matched labels)  43.6  70.0  95.5  99.3  78.7  95.0  98.7
+cross-encoder alone                                           34.8  47.2  85.3  95.9  65.9  85.9  95.9
+NIFT-SQL-base (off-the-shelf search)                          51.3  73.5  94.0  98.6  82.3  94.4  98.2
+NIFT-SQL                                                      56.8  79.4  96.4  99.8  85.4  96.7  99.0
+
+== real: 121 questions per seed, mean over seeds, %
+                                                               c@5   c@8  c@15  c@25   R@5  R@10  R@15
+method                                                                                                
+search (off-the-shelf BGE)                                    19.0  28.9  42.1  58.7  51.3  66.4  74.3
+fine-tuned retriever, training questions                      23.1  31.4  58.7  78.5  53.2  74.4  83.3
+fine-tuned retriever, training + validation (matched labels)  22.3  31.4  62.0  76.0  53.0  73.6  84.5
+cross-encoder alone                                            6.6  11.6  29.8  39.7  36.7  53.5  62.3
+NIFT-SQL-base (off-the-shelf search)                          19.0  25.6  44.6  71.9  51.0  68.5  79.6
+NIFT-SQL                                                      24.0  34.7  54.5  74.4  56.6  72.3  80.8
+
+== test, complete@15 by database and by number of gold tables
+db                                                              dw  neutron   nova
+method                                                                            
+search (off-the-shelf BGE)                                    54.6     55.3   64.7
+fine-tuned retriever, training questions                      93.6     95.5  100.0
+fine-tuned retriever, training + validation (matched labels)  95.2     94.5  100.0
+cross-encoder alone                                           83.3     89.4  100.0
+NIFT-SQL-base (off-the-shelf search)                          93.5     94.0  100.0
+NIFT-SQL                                                      95.7     99.0  100.0
+size                                                           1-2   3-4    5+
+method                                                                        
+search (off-the-shelf BGE)                                    76.1  60.4  29.3
+fine-tuned retriever, training questions                      98.2  97.2  84.6
+fine-tuned retriever, training + validation (matched labels)  97.4  97.6  88.9
+cross-encoder alone                                           93.4  90.1  67.9
+NIFT-SQL-base (off-the-shelf search)                          94.1  95.5  90.4
+NIFT-SQL                                                      98.5  98.1  90.9
+
+== NIFT-SQL minus each method, pooled over seeds, 95% interval clustered by gold-table set (* excludes zero)
+  minus search (off-the-shelf BGE)                                     | test c@8 +54.3 [+46.8, +61.5] *   c@15 +41.0 [+35.3, +47.6] * (H1)
+  minus search (off-the-shelf BGE)                                     | real c@8  +5.8 [-1.6, +13.3]     c@15 +12.4 [+2.5, +22.6] *
+  minus fine-tuned retriever, training questions                       | test c@8 +11.1 [+7.9, +14.8] *   c@15  +2.1 [+0.6, +3.8] *
+  minus fine-tuned retriever, training questions                       | real c@8  +3.3 [-2.9, +9.7]     c@15  -4.1 [-11.1, +2.7]  
+  minus fine-tuned retriever, training + validation (matched labels)   | test c@8  +9.4 [+6.3, +12.9] *   c@15  +1.0 [-0.5, +2.5]   (H2)
+  minus fine-tuned retriever, training + validation (matched labels)   | real c@8  +3.3 [-2.7, +9.6]     c@15  -7.4 [-14.0, -0.9] *
+  minus cross-encoder alone                                            | test c@8 +32.2 [+24.8, +40.2] *   c@15 +11.2 [+8.1, +15.0] *
+  minus cross-encoder alone                                            | real c@8 +23.1 [+14.4, +32.3] *   c@15 +24.8 [+15.7, +34.4] *
+  minus NIFT-SQL-base (off-the-shelf search)                           | test c@8  +5.8 [+3.3, +8.7] *   c@15  +2.4 [+0.5, +4.4] *
+  minus NIFT-SQL-base (off-the-shelf search)                           | real c@8  +9.1 [+4.0, +15.0] *   c@15  +9.9 [+3.2, +17.5] *

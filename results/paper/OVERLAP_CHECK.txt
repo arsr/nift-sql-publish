@@ -1,0 +1,12 @@
+Overlap of the current public BEAVER release's questions with the 209 questions of the older table-retrieval release
+(colab/overlap_check_cell.py; text lowercased, punctuation removed; word overlap = Jaccard of word sets)
+
+old release: 209 questions
+dw_real    121 questions | exact matches 112 | word overlap >= 0.8: 120 | >= 0.6: 121
+     closest (1.00): what is the current building key building street address city state and postal code of the history department
+     closest (1.00): show the unique activity titles locations term start date and supervisor name for all independent activities sorted by the ascending order of start da
+dw        5787 questions | exact matches 0 | word overlap >= 0.8: 1 | >= 0.6: 18
+     closest (0.81): for each term and department list the term department name the number of courses offered average number of enrolled students the school name and depar
+     closest (0.75): for each term and department list the term department the number of courses average number of equivalent subjects the school name department phone num
+nova      1053 questions | exact matches 0 | word overlap >= 0.8: 0 | >= 0.6: 0
+neutron   1017 questions | exact matches 0 | word overlap >= 0.8: 0 | >= 0.6: 0

@@ -1,0 +1,19 @@
+# Output of experiments/join_check.py (commit faa94ab): seed-0 validation decision for configs/nift_ftj.yaml vs arjun_v2 (nift_ft).
+# (np.float64(...) wrappers in the printed dicts removed for readability; numbers unchanged.)
+# Rule fixed in advance: PASS if mean complete@8 gain >= +2.0 and no dataset significantly worse.
+==============================================================================================================
+SEED 0 VALIDATION (fusion 2-fold inside validation)
+==============================================================================================================
+                                                c@8                                   c@15                                   c@25
+set                                          beaver livesqlbench livesqlbench_large beaver livesqlbench livesqlbench_large beaver livesqlbench livesqlbench_large
+method
+0. v2 (core 8)                                 47.7         71.2               64.6   69.2         88.0               81.8   81.5         93.6               86.9
+1. + join features (declared joins only)       47.7         72.0               68.7   69.2         87.2               82.8   81.5         93.6               87.9
+2. + inferred joins (Laya retrained), core 8   47.7         68.8               65.7   69.2         88.0               82.8   76.9         92.8               89.9
+3. + inferred joins + join features            49.2         72.8               69.7   67.7         85.6               83.8   80.0         92.8               89.9
+multi-table validation gold sets where every table joins another gold table, base: {'beaver': 0.0, 'livesqlbench': 70.7, 'livesqlbench_large': 70.4}
+multi-table validation gold sets where every table joins another gold table, candidate: {'beaver': 12.3, 'livesqlbench': 75.8, 'livesqlbench_large': 76.5}
+
+1. + join features (declared joins only)       c@8 vs v2: beaver +0.0 [+0.0, +0.0] | livesqlbench +0.8 [-1.7, +3.7] | livesqlbench_large +4.0 [+0.0, +9.1]  -> mean +1.6: no
+2. + inferred joins (Laya retrained), core 8   c@8 vs v2: beaver +0.0 [-9.0, +7.7] | livesqlbench -2.4 [-8.4, +3.8] | livesqlbench_large +1.0 [-5.1, +7.2]  -> mean -0.5: no
+3. + inferred joins + join features            c@8 vs v2: beaver +1.5 [-5.0, +7.9] | livesqlbench +1.6 [-4.1, +7.2] | livesqlbench_large +5.1 [-0.9, +11.5]  -> mean +2.7: PASS

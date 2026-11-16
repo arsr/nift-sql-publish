@@ -1,0 +1,34 @@
+# Output of experiments/supervised_crossencoder.py (commit aecb1ca): bge-reranker-large fine-tuned on Laya's training rows, test, seeds 1-4, vs nift_base (commit 8c75bed).
+
+==============================================================================================================
+TEST, seeds [1, 2, 3, 4]: mean over seeds (std)
+==============================================================================================================
+                                                                 c@5         c@8        c@15        c@25        R@10      
+                                                                mean   std  mean   std  mean   std  mean   std  mean   std
+set                method                                                                                                 
+beaver             Laya alone                                    6.5   2.3  13.7  10.7  31.0  13.3  47.0  16.4  52.3  12.3
+                   NIFT-SQL (fusion)                            21.4  11.8  41.7   9.2  60.1  11.9  74.4  13.2  76.0   9.9
+                   NIFT-SQL with fine-tuned bge-reranker-large  26.8  12.2  48.8  13.0  67.3  11.1  77.4  10.6  80.2   8.5
+                   bge-reranker-large fine-tuned, alone         11.9   5.1  21.4   8.0  45.2  15.2  63.1  18.8  62.3   9.8
+                   search alone                                 14.3   8.5  20.2   8.8  30.4   6.3  44.6   6.8  55.6   2.3
+livesqlbench       Laya alone                                   22.1   6.3  34.9   9.8  51.6   7.1  64.2   4.8  62.0   5.6
+                   NIFT-SQL (fusion)                            50.6   4.1  70.3   4.0  83.2   3.5  89.5   4.3  86.7   3.1
+                   NIFT-SQL with fine-tuned bge-reranker-large  52.1  11.4  71.5   6.2  86.2   4.9  89.2   4.6  86.8   4.6
+                   bge-reranker-large fine-tuned, alone         41.2  10.8  58.2  13.9  69.1  12.3  74.4  11.6  78.0   7.9
+                   search alone                                 20.4   5.7  28.3   4.1  41.0   3.7  51.6   7.7  59.3   2.6
+livesqlbench_large Laya alone                                   25.8   7.9  35.7  10.7  54.7   7.4  65.2   5.1  65.3   8.0
+                   NIFT-SQL (fusion)                            48.5   5.8  63.8   4.9  79.1   2.7  85.0   3.3  86.4   3.6
+                   NIFT-SQL with fine-tuned bge-reranker-large  52.3  10.3  68.0   9.3  78.6   9.0  83.2   5.8  85.6   5.5
+                   bge-reranker-large fine-tuned, alone         40.6  14.0  58.7  15.7  71.7  12.8  77.2  11.5  80.3  10.1
+                   search alone                                 13.6   2.9  19.9   5.9  21.8   5.4  28.0   6.0  39.9   4.0
+
+A minus B, pooled over seeds, c@8 / c@15 / R@10 [95% CI, clustered by gold-table set across seeds]
+  bge-reranker-large fine-tuned, alone minus Laya alone | beaver               c@8  +7.7 [-1.9, +17.3]   c@15 +14.3 [+1.9, +27.8]   R@10  +9.9 [+2.2, +18.3]
+  bge-reranker-large fine-tuned, alone minus Laya alone | livesqlbench         c@8 +23.5 [+16.9, +30.5]   c@15 +17.6 [+11.5, +23.8]   R@10 +16.1 [+11.4, +21.1]
+  bge-reranker-large fine-tuned, alone minus Laya alone | livesqlbench_large   c@8 +22.7 [+14.7, +31.3]   c@15 +16.8 [+10.0, +24.3]   R@10 +14.9 [+9.2, +21.2]
+  NIFT-SQL with fine-tuned bge-reranker-large minus NIFT-SQL (fusion) | beaver               c@8  +7.1 [-4.2, +16.9]   c@15  +7.1 [+0.0, +14.5]   R@10  +4.2 [-0.0, +8.1]
+  NIFT-SQL with fine-tuned bge-reranker-large minus NIFT-SQL (fusion) | livesqlbench         c@8  +1.2 [-5.1, +7.7]   c@15  +2.9 [-2.6, +8.6]   R@10  +0.0 [-3.9, +4.0]
+  NIFT-SQL with fine-tuned bge-reranker-large minus NIFT-SQL (fusion) | livesqlbench_large   c@8  +4.0 [-1.3, +9.6]   c@15  -0.7 [-5.9, +4.5]   R@10  -0.9 [-4.2, +2.8]
+  NIFT-SQL with fine-tuned bge-reranker-large minus search alone | beaver               c@8 +28.6 [+13.9, +42.5]   c@15 +36.9 [+20.8, +52.5]   R@10 +24.7 [+14.2, +35.1]
+  NIFT-SQL with fine-tuned bge-reranker-large minus search alone | livesqlbench         c@8 +43.2 [+35.0, +51.7]   c@15 +45.3 [+36.4, +54.8]   R@10 +27.5 [+21.0, +34.3]
+  NIFT-SQL with fine-tuned bge-reranker-large minus search alone | livesqlbench_large   c@8 +48.0 [+39.9, +56.2]   c@15 +56.8 [+47.9, +65.3]   R@10 +45.6 [+38.8, +52.3]

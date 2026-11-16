@@ -1,0 +1,18 @@
+# Output of experiments/decider_zeroshot.py --scorer pplx (commit d878851), run arjun_v3j seed 0 (config nift_ftj). Validation only.
+==============================================================================================================
+SEED 0 VALIDATION, scorers on the search top 100 tables (fusion 2-fold inside validation)
+==============================================================================================================
+                                                          c@8                                   c@15                                   c@25
+set                                                    beaver livesqlbench livesqlbench_large beaver livesqlbench livesqlbench_large beaver livesqlbench livesqlbench_large
+method
+Laya (fine-tuned, 421M) alone                             9.2         42.4               52.5   26.2         61.6               68.7   38.5         69.6               76.8
+NIFT-SQL fusion with Laya (fine-tuned, 421M)             47.7         70.4               67.7   66.2         84.0               82.8   78.5         93.6               85.9
+NIFT-SQL fusion with pplx-decider-flash 4B (zero-shot)   44.6         74.4               54.5   70.8         89.6               74.7   78.5         94.4               80.8
+pplx-decider-flash 4B (zero-shot) alone                   7.7         19.2                9.1   26.2         32.0               17.2   50.8         44.0               29.3
+
+pplx-decider-flash 4B (zero-shot) fusion minus Laya fusion:
+  beaver c@8 -3.1 [-25.8,+16.7]  c@15 +4.6 [-1.6,+11.6]
+  livesqlbench c@8 +4.0 [-0.8,+9.4]  c@15 +5.6 [-0.9,+14.1]
+  livesqlbench_large c@8 -13.1 [-21.2,-6.0]  c@15 -8.1 [-14.6,-2.2]
+
+pplx-decider-flash 4B (zero-shot) ms per table: beaver 34 (other datasets not captured in the pasted output)

@@ -1,0 +1,60 @@
+# Output of experiments/laya_budget.py (commit 549ecd2), runs arjun_v3j seeds 0-2 (config nift_ftj). Validation only.
+==============================================================================================================
+LAYA BUDGET, VALIDATION (fusion 2-fold inside validation)
+==============================================================================================================
+tables Laya scores per question:
+set                 beaver  livesqlbench  livesqlbench_large
+budget                                                      
+all tables (today)     463           244                 971
+50% of tables          232           122                 486
+25% of tables          116            61                 243
+top 100                100           100                 100
+top 50                  50            50                  50
+
+seed 0  (gold_in_scored = questions whose gold tables are all among the tables Laya scored)
+                      c@8                                   c@15                                 gold_in_scored                                
+set                beaver livesqlbench livesqlbench_large beaver livesqlbench livesqlbench_large         beaver livesqlbench livesqlbench_large
+budget                                                                                                                                         
+all tables (today)   49.2         72.8               69.7   67.7         85.6               83.8          100.0        100.0              100.0
+50% of tables        49.2         72.8               68.7   67.7         84.0               84.8          100.0         98.4              100.0
+25% of tables        47.7         71.2               66.7   67.7         87.2               84.8           93.8         96.0               98.0
+top 100              47.7         70.4               68.7   66.2         86.4               81.8           93.8         98.4               90.9
+top 50               47.7         68.0               63.6   67.7         85.6               73.7           86.2         94.4               76.8
+
+seed 1  (gold_in_scored = questions whose gold tables are all among the tables Laya scored)
+                      c@8                                   c@15                                 gold_in_scored                                
+set                beaver livesqlbench livesqlbench_large beaver livesqlbench livesqlbench_large         beaver livesqlbench livesqlbench_large
+budget                                                                                                                                         
+all tables (today)   36.5         81.0               81.0   63.5         89.7               89.0          100.0        100.0              100.0
+50% of tables        38.1         80.2               82.0   65.1         90.5               89.0          100.0        100.0              100.0
+25% of tables        39.7         79.4               80.0   66.7         89.7               90.0          100.0         95.2              100.0
+top 100              39.7         79.4               81.0   65.1         88.9               89.0           96.8         98.4               95.0
+top 50               34.9         78.6               80.0   61.9         88.1               87.0           81.0         94.4               89.0
+
+seed 2  (gold_in_scored = questions whose gold tables are all among the tables Laya scored)
+                      c@8                                   c@15                                 gold_in_scored                                
+set                beaver livesqlbench livesqlbench_large beaver livesqlbench livesqlbench_large         beaver livesqlbench livesqlbench_large
+budget                                                                                                                                         
+all tables (today)   37.9         78.4               75.0   56.1         90.4               88.0          100.0        100.0              100.0
+50% of tables        39.4         80.8               73.0   56.1         90.4               85.0          100.0        100.0              100.0
+25% of tables        37.9         79.2               73.0   56.1         90.4               87.0           98.5         95.2              100.0
+top 100              37.9         77.6               71.0   56.1         90.4               86.0           97.0         98.4               93.0
+top 50               37.9         77.6               71.0   56.1         90.4               83.0           75.8         93.6               87.0
+
+change vs all tables, c@8 and c@15 [95% CI over gold-set groups]
+seed 0 50% of tables  mean -0.3 / -0.2  OK  | beaver +0.0 [+0.0,+0.0] / +0.0 [+0.0,+0.0] | livesqlbench +0.0 [+0.0,+0.0] / -1.6 [-4.2,+0.0] | livesqlbench_large -1.0 [-4.6,+2.2] / +1.0 [+0.0,+3.3]
+seed 0 25% of tables  mean -2.1 / +0.9  worse  | beaver -1.5 [-5.4,+0.0] / +0.0 [-4.8,+4.2] | livesqlbench -1.6 [-5.0,+1.6] / +1.6 [-1.6,+4.8] | livesqlbench_large -3.0 [-8.0,+1.0] / +1.0 [+0.0,+3.3]
+seed 0 top 100        mean -1.6 / -0.9  worse  | beaver -1.5 [-5.4,+0.0] / -1.5 [-5.6,+0.0] | livesqlbench -2.4 [-6.1,+0.8] / +0.8 [-2.5,+4.2] | livesqlbench_large -1.0 [-4.7,+2.2] / -2.0 [-5.3,+0.0]
+seed 0 top 50         mean -4.1 / -3.4  worse  | beaver -1.5 [-5.0,+0.0] / +0.0 [-4.8,+4.2] | livesqlbench -4.8 [-9.2,-0.8] / +0.0 [-4.3,+4.2] | livesqlbench_large -6.1 [-11.3,-1.9] / -10.1 [-17.6,-3.9]
+seed 1 50% of tables  mean +0.6 / +0.8  OK  | beaver +1.6 [-5.0,+8.1] / +1.6 [+0.0,+5.8] | livesqlbench -0.8 [-2.6,+0.0] / +0.8 [+0.0,+2.7] | livesqlbench_large +1.0 [+0.0,+3.2] / +0.0 [+0.0,+0.0]
+seed 1 25% of tables  mean +0.2 / +1.4  OK  | beaver +3.2 [-3.8,+10.3] / +3.2 [+0.0,+7.8] | livesqlbench -1.6 [-3.9,+0.0] / +0.0 [-3.1,+3.3] | livesqlbench_large -1.0 [-4.4,+2.1] / +1.0 [+0.0,+3.2]
+seed 1 top 100        mean +0.5 / +0.3  OK  | beaver +3.2 [-3.8,+10.3] / +1.6 [+0.0,+5.8] | livesqlbench -1.6 [-3.9,+0.0] / -0.8 [-4.4,+2.6] | livesqlbench_large +0.0 [-4.0,+4.0] / +0.0 [+0.0,+0.0]
+seed 1 top 50         mean -1.7 / -1.7  worse  | beaver -1.6 [-5.7,+0.0] / -1.6 [-7.9,+3.8] | livesqlbench -2.4 [-5.1,+0.0] / -1.6 [-5.4,+2.4] | livesqlbench_large -1.0 [-4.9,+2.0] / -2.0 [-6.2,+1.9]
+seed 2 50% of tables  mean +0.6 / -1.0  OK  | beaver +1.5 [-3.4,+6.7] / +0.0 [-4.3,+4.6] | livesqlbench +2.4 [+0.0,+5.3] / +0.0 [-2.4,+2.3] | livesqlbench_large -2.0 [-6.5,+1.9] / -3.0 [-6.6,+0.0]
+seed 2 25% of tables  mean -0.4 / -0.3  OK  | beaver +0.0 [-4.5,+4.5] / +0.0 [-4.3,+4.6] | livesqlbench +0.8 [-1.7,+3.8] / +0.0 [-3.1,+3.1] | livesqlbench_large -2.0 [-7.0,+2.9] / -1.0 [-4.4,+2.2]
+seed 2 top 100        mean -1.6 / -0.7  worse  | beaver +0.0 [-4.5,+4.5] / +0.0 [-4.3,+4.6] | livesqlbench -0.8 [-3.5,+1.7] / +0.0 [-3.9,+3.8] | livesqlbench_large -4.0 [-11.2,+2.2] / -2.0 [-6.3,+1.9]
+seed 2 top 50         mean -1.6 / -1.7  worse  | beaver +0.0 [-4.5,+4.5] / +0.0 [-6.4,+6.5] | livesqlbench -0.8 [-3.5,+1.7] / +0.0 [-3.8,+3.9] | livesqlbench_large -4.0 [-13.1,+4.1] / -5.0 [-12.8,+1.8]
+
+DECISION (seed 0 rule): 50% of tables
+  check on seed 1 validation: holds
+  check on seed 2 validation: holds

@@ -1,0 +1,16 @@
+# never commit data, model weights or run caches
+data/
+results/*/rows/
+results/*/checkpoints/
+results/*/scores/
+results/.cache/
+*.jsonl
+*.npy
+*.pkl
+*.pt
+*.safetensors
+.env
+*.key
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/

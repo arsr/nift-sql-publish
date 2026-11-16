@@ -1,0 +1,26 @@
+# Output of experiments/pplx_finetune.py (commit ad1401e), run arjun_v3j seed 0 (config nift_ftj). Validation only.
+# Training loss (BEAVER): step 50 0.6731 | step 100 0.4359 | step 150 0.2665 | step 200 0.2558 (2 epochs, 250 steps)
+==============================================================================================================
+SEED 0 VALIDATION, scorers on the search top 100 tables (fusion 2-fold inside validation)
+==============================================================================================================
+                                                   c@8                                   c@15                                   c@25
+set                                             beaver livesqlbench livesqlbench_large beaver livesqlbench livesqlbench_large beaver livesqlbench livesqlbench_large
+method
+Laya (fine-tuned, 421M) alone                      9.2         42.4               52.5   26.2         61.6               68.7   38.5         69.6               76.8
+NIFT-SQL fusion with Laya (fine-tuned, 421M)      47.7         70.4               67.7   66.2         84.0               82.8   78.5         93.6               85.9
+NIFT-SQL fusion with pplx 4B (fine-tuned, LoRA)   66.2         83.2               77.8   76.9         93.6               85.9   81.5         96.8               87.9
+NIFT-SQL fusion with pplx 4B (zero-shot)          44.6         74.4               54.5   70.8         89.6               74.7   78.5         94.4               80.8
+pplx 4B (fine-tuned, LoRA) alone                  35.4         74.4               74.7   60.0         88.0               82.8   76.9         92.8               88.9
+pplx 4B (zero-shot) alone                          7.7         19.2                9.1   26.2         32.0               17.2   50.8         44.0               29.3
+
+pplx 4B (fine-tuned, LoRA) fusion minus Laya fusion:
+  beaver c@8 +18.5 [+7.8,+31.5]  c@15 +10.8 [+1.6,+20.9]
+  livesqlbench c@8 +12.8 [+4.7,+22.0]  c@15 +9.6 [+1.7,+18.7]
+  livesqlbench_large c@8 +10.1 [+3.1,+17.6]  c@15 +3.0 [-1.1,+7.4]
+
+pplx 4B (zero-shot) fusion minus Laya fusion:
+  beaver c@8 -3.1 [-25.8,+16.7]  c@15 +4.6 [-1.6,+11.6]
+  livesqlbench c@8 +4.0 [-0.8,+9.4]  c@15 +5.6 [-0.9,+14.1]
+  livesqlbench_large c@8 -13.1 [-21.2,-6.0]  c@15 -8.1 [-14.6,-2.2]
+
+timing: train beaver 9.6 min, score beaver 47.9 ms/table, train livesqlbench 16.3 min, score livesqlbench 38.2 ms/table, score livesqlbench_large 46.1 ms/table
