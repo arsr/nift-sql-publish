@@ -1,6 +1,6 @@
 """BEAVER (current public release) for the v2 experiments: tables, questions, labels, splits, join graph.
 
-Input: the parquet files written by colab/beaver_v3_* cells into one folder:
+Input: the parquet files of the public BEAVER release, flat in one folder (NIFT-SQL: get_data.py --beaver):
   table_dw.parquet, table_nova.parquet, table_neutron.parquet     (one row per table: db, table_name, column_names, ...)
   query_dw.parquet, query_nova.parquet, query_neutron.parquet     (synthetic, expert-verified questions)
   query_dw_real.parquet                                           (121 real questions from query logs; test only)

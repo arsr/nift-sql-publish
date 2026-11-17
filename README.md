@@ -73,18 +73,54 @@ that produced the main results. Later commits only added analysis scripts and re
 
 ## Reproduce
 
-Data: the table-retrieval releases of BEAVER, LiveSQLBench and LiveSQLBench-Large in one folder
-(`beaver/`, `livesqlbench_table/`, `livesqlbench_large_table/`, each with `corpus.jsonl`, `queries.jsonl`, `qrels/test.tsv`).
-
 ```
 pip install -r requirements.txt
-python reproduce_paper.py --data <DATA_ROOT> --out <OUT_ROOT>      # everything, resumable, logs in <OUT_ROOT>/results/logs
-python main.py --seed 1 --name nift_base --data <DATA_ROOT> --out <OUT_ROOT>   # one run
+python get_data.py --out <DATA_ROOT>                                # the three collections, pinned revision, counts checked
+python reproduce_paper.py --data <DATA_ROOT> --out <OUT_ROOT>       # every main-text and supplementary result, in order
+python main.py --seed 1 --name nift_base --data <DATA_ROOT> --out <OUT_ROOT>   # or just one run
 ```
 
-About 20 minutes per run on one A100-class GPU (Laya scoring dominates), 18 runs in total, plus about 30 minutes for the
-reranker. In Colab: clone the repository, `pip install -r requirements.txt`, then run the same command in a cell.
-The appendix studies B to D are separate scripts: see [`experiments/README.md`](experiments/README.md).
+**Data.** `get_data.py` downloads the table-retrieval versions of BEAVER, LiveSQLBench and LiveSQLBench-Large from the
+SQL schema retrieval benchmark of Zeng et al. (2026) (Hugging Face dataset `Snowflake/SQL-Schema-Retrieval`, pinned
+revision) and stops if the counts differ from the paper's (463/209, 244/410, 971/332 tables/questions). The holdout on
+the newer BEAVER release needs the gated datasets `beaverbench/beaver-query` and `beaverbench/beaver-table`: accept
+their terms on Hugging Face, set `HF_TOKEN`, then
+
+```
+python get_data.py --beaver <BEAVER_DIR>
+python reproduce_paper.py --data <DATA_ROOT> --out <OUT_ROOT> --stages holdout --beaver <BEAVER_DIR>
+```
+
+**What `reproduce_paper.py` runs**, in dependency order; each stage writes a report named like the file in
+`results/paper/` that holds the paper's numbers, so the two can be compared line by line:
+
+| Stage | What | Report |
+|---|---|---|
+| `main` | NIFT-SQL-base with Laya, the pre-specified configuration, seeds 1 to 4 | `PAPER_TABLES.txt` |
+| `curve` | training size 10, 20, 30% with Laya | `PAPER_TABLES.txt` |
+| `appendix` | fine-tuned BGE with join completion (Supplementary Appendix A) | `PAPER_TABLES.txt` |
+| `reranker` | zero-shot Qwen3-Reranker-8B over the search top 100 | `PAPER_TABLES.txt` |
+| `ce` | the fine-tuned cross-encoder (headline scorer), zero-shot, without join hints, at 10/20/30% | `SUPERVISED_CROSSENCODER_bge-reranker-large.txt` |
+| `additional` | retraining replicates, deterministic-mode check, reranker variants, fine-tuned retriever baselines | `ADDITIONAL_ANALYSES.txt` |
+| `ce_analysis` | cross-encoder analyses (CPU) | `CE_ANALYSIS.txt` |
+| `extensions` | NIFT-SQL with the fine-tuned retriever, and the high-accuracy mode | `FUSION_EXTENSIONS.txt` |
+| `breakdowns` | breakdowns by number of tables, fusion controls, the worked fusion example (CPU) | `FINAL_BREAKDOWNS.txt`, `FUSION_CONTROLS.txt`, `FUSION_EXAMPLE.txt` |
+| `tables` | the Laya-era tables in one file | `PAPER_TABLES.txt` |
+| `holdout` | frozen NIFT-SQL, scored once on the newer BEAVER release (only with `--beaver`) | `CONFIRM.txt` |
+
+Every step is resumable: finished runs and finished reports are skipped. Each Laya run takes about 20 minutes on one
+A100-class GPU (18 runs), the additional analyses about 2 GPU hours, and the cross-encoder runs a few minutes per seed.
+The reranker steps need a GPU with about 20 GB. In Colab: clone the repository, `pip install -r requirements.txt`, then
+run the same commands in a cell. The exploratory appendix studies B to D are separate scripts: see
+[`experiments/README.md`](experiments/README.md).
+
+**What to expect.** The same seed gives the same splits and the same training rows (the tests check that splits repeat), and the code
+refuses to score a test split twice. Model training on a GPU is not bit-for-bit repeatable, even with PyTorch's deterministic algorithms
+(the paper's check is in `ADDITIONAL_ANALYSES.txt`), and retraining alone moves a seed's complete@15 by a few points
+(standard deviation 4.9, 2.2 and 5.1 points on BEAVER, LiveSQLBench and LiveSQLBench-Large). A reproduction should
+therefore fall inside the paper's intervals, which resample training runs as well as questions, rather than match every
+digit. `requirements.txt` gives minimum versions and pins `laya`; each run records its Python, NumPy, scikit-learn,
+PyTorch and laya versions in its `manifest.json`.
 
 ## How one run works (`main.py`, top to bottom)
 
@@ -105,6 +141,7 @@ Customers: BEAVER; LiveSQLBench + LiveSQLBench-Large together (they share databa
 
 ```
 main.py                 one run, the 8 steps above
+get_data.py             downloads the benchmark data (pinned revision, counts checked)
 reproduce_paper.py      every run and table of the paper, in order
 nift/                   the method (data, split, search, scorer, fusion, evaluate, costs, pipeline, budget)
 configs/                default.yaml (the paper), train10/20/30.yaml (training size), nift_ft/nift_ftj.yaml (appendix A)
@@ -145,8 +182,8 @@ refuses to reuse a run folder made with a different config or different table ca
 
 ## Related work by the same authors
 
-FERN (arXiv:2611.14477) studies the opposite case: a ranker trained once on public data, with no supervision from the
-target catalog.
+FERN (arXiv:2611.14477; code: https://github.com/arsr/fern-publish) studies the opposite case: a ranker trained once
+on public data, with no supervision from the target catalog.
 
 ## Licence
 
