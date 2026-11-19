@@ -1,7 +1,7 @@
 """Confirmation run: NIFT-SQL, frozen as in the paper, scored ONCE on data it has never seen. Read top to bottom.
 
-    python experiments/confirm_beaver_v3.py --beaver /content/drive/MyDrive/beaver_v3 \
-        --keys /content/drive/MyDrive/nift_v2/schema_keys.json --out /content/drive/MyDrive/nift_confirm [--seeds 1]
+    python experiments/confirm_beaver_v3.py --beaver <BEAVER_DIR> \
+        --keys <KEYS_DIR>/schema_keys.json --out <OUT_DIR> [--seeds 1]
 
 Data: the current public BEAVER release (dw, nova, neutron; 381 tables pooled, no database identifier; 7,857 synthetic
 questions and 121 real questions from query logs). The paper's BEAVER is an older 209-question retrieval release, so no

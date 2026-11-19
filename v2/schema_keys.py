@@ -1,6 +1,6 @@
 """Read the declared keys of every BEAVER table from the database dumps (CPU). Read top to bottom.
 
-    python v2/schema_keys.py --data /content/drive/MyDrive/beaver_v3 --out /content/drive/MyDrive/nift_v2
+    python v2/schema_keys.py --data <BEAVER_DIR> --out <KEYS_DIR>
 
 The dumps (beaver_db.zip: dw.sql, nova.sql, neutron.sql, or the .sql files themselves) are searched for under --data.
 Only the CREATE TABLE and ALTER TABLE statements are read; the dumps are scanned in 64 MB chunks, so the 2 GB nova dump
